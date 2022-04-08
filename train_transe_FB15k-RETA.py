@@ -5,17 +5,17 @@ from openke.module.loss import MarginLoss
 from openke.module.strategy import NegativeSampling
 from openke.data import TrainDataLoader, TestDataLoader
 
-dataset = "humans_wikidata"
+dataset = "FB15k-RETA"
 model_name = "transE"
 
 # dataloader for training
 train_dataloader = TrainDataLoader(
 	in_path = "./benchmarks/{}/".format(dataset),
 	nbatches = 100,
-	threads = 8, 
-	sampling_mode = "normal", 
-	bern_flag = 1, 
-	filter_flag = 1, 
+	threads = 8,
+	sampling_mode = "normal",
+	bern_flag = 1,
+	filter_flag = 1,
 	neg_ent = 25,
 	neg_rel = 0)
 
@@ -27,13 +27,13 @@ transe = TransE(
 	ent_tot = train_dataloader.get_ent_tot(),  # entTotal
 	rel_tot = train_dataloader.get_rel_tot(),  # relTotal
 	dim = 200,  # Embedding维度为200
-	p_norm = 1, 
+	p_norm = 1,
 	norm_flag = True)
 
 
 # define the loss function
 model = NegativeSampling(
-	model = transe, 
+	model = transe,
 	loss = MarginLoss(margin = 5.0),
 	batch_size = train_dataloader.get_batch_size()
 )
