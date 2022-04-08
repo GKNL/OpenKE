@@ -145,9 +145,9 @@ class TestDataLoader(object):
 		return self.testTotal
 
 	def __iter__(self):
-		if self.sampling_mode == "link":
+		if self.sampling_mode == "link":  # 链接预测
 			self.lib.initTest()
 			return TestDataSampler(self.testTotal, self.sampling_lp)
-		else:
+		else:  # 三元组分类
 			self.lib.initTest()
 			return TestDataSampler(1, self.sampling_tc)

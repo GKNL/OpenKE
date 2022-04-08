@@ -22,8 +22,8 @@ class NegativeSampling(Strategy):
 
 	def forward(self, data):
 		score = self.model(data)
-		p_score = self._get_positive_score(score)
-		n_score = self._get_negative_score(score)
+		p_score = self._get_positive_score(score)  # 正样本分数
+		n_score = self._get_negative_score(score)  # 负样本分数
 		loss_res = self.loss(p_score, n_score)
 		if self.regul_rate != 0:
 			loss_res += self.regul_rate * self.model.regularization(data)

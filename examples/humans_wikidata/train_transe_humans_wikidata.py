@@ -7,7 +7,7 @@ from openke.data import TrainDataLoader, TestDataLoader
 
 # dataloader for training
 train_dataloader = TrainDataLoader(
-	in_path = "./benchmarks/FB15K237/", 
+	in_path = "./benchmarks/humans_wikidata/",
 	nbatches = 100,
 	threads = 8, 
 	sampling_mode = "normal", 
@@ -17,7 +17,7 @@ train_dataloader = TrainDataLoader(
 	neg_rel = 0)
 
 # dataloader for test
-test_dataloader = TestDataLoader("./benchmarks/FB15K237/", "link")  # sampling_mode = 'link'
+test_dataloader = TestDataLoader("./benchmarks/humans_wikidata/", "link", type_constrain=False)  # sampling_mode = 'link'
 
 # define the model
 transe = TransE(
