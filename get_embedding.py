@@ -3,14 +3,14 @@ import json
 """
 从训练好的模型保存下的权重里，提取出entity和relation的embedding
 """
-dataset = "humans_wikidata"
-model_name = "transE"
+dataset = "FB15K237"  # humans_wikidata
+model_name = "transe"  # transE  rotate  distmult  complEx
 
 
-f1 = open("./checkpoint/{}/{}/entity_vec_.transe".format(dataset, model_name), "w")
-f2 = open("./checkpoint/{}/{}/relation_vec.transe".format(dataset, model_name), "w")
+f1 = open("./checkpoint/{}/{}/entity_vec.{}".format(dataset, model_name, model_name), "w")
+f2 = open("./checkpoint/{}/{}/relation_vec.{}".format(dataset, model_name, model_name), "w")
 
-with open("./checkpoint/transE/humans_wikidata/transe_emb.vec") as f:
+with open("./checkpoint/{}/{}/{}_emb.vec".format(dataset, model_name, model_name)) as f:
     res =json.load(f)
     str1 = ""
     str2 = ""
@@ -21,6 +21,8 @@ with open("./checkpoint/transE/humans_wikidata/transe_emb.vec") as f:
     entity_emb_dim = len(list1[0])
     relation_num = len(list2)
     relation_emb_dim = len(list2[0])
+    print(f'entity_num:{entity_num}, entity_emb_num:{entity_emb_dim}')
+    print(f'relation_num:{relation_num}, relation_emb_dim:{relation_emb_dim}')
     f1.write(str(entity_num) + ' ' + str(entity_emb_dim) + '\n')
     f2.write(str(relation_num) + ' ' + str(relation_emb_dim) + '\n')
 

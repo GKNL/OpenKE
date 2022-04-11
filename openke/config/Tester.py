@@ -118,11 +118,11 @@ class Tester(object):
         ans = []
         training_range = tqdm(self.data_loader)
         for index, [pos_ins, neg_ins] in enumerate(training_range):
-            res_pos = self.test_one_step(pos_ins)
+            res_pos = self.test_one_step(pos_ins)  # 正样本的分数
             ans = ans + [1 for i in range(len(res_pos))]
             score.append(res_pos)
 
-            res_neg = self.test_one_step(neg_ins)
+            res_neg = self.test_one_step(neg_ins)  # 负样本的分数
             ans = ans + [0 for i in range(len(res_pos))]
             score.append(res_neg)
 
@@ -141,11 +141,32 @@ class Tester(object):
         total_true = np.sum(ans)
         total_false = total_all - total_true
 
+        # 自带的评估代码
         for index, [ans, score] in enumerate(res):
             if score > threshlod:
                 acc = (2 * total_current + total_false - index) / total_all
                 break
             elif ans == 1:
                 total_current += 1.0
+
+        # 修改的评估代码
+        tp = 0.0
+        fn = 0.0
+        fp = 0.0
+        tn = 0.0
+        for index, [ans, score] in enumerate(res):
+            if score <= threshlod and ans == 1:
+                tp += 1.0
+            elif score <= threshlod and ans == 0:
+                fp += 1.0
+            elif score > threshlod and ans == 1:
+                fn += 1.0
+            elif score > threshlod and ans == 0:
+                tn += 1.0
+        accuracy = (tp + tn) / (tp + tn + fn + fp)
+        precision = tp / (tp + fp)
+        recall = tp / (tp + fn)
+        f1 = 2 * (recall * precision) / (recall + precision)
+        print(f"Accuracy: {accuracy} | Precision: {precision} | Recall: {recall} | Micro F1: {f1}")
 
         return acc, threshlod
